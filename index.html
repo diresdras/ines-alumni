@@ -141,10 +141,10 @@ html[data-contrast="high"] .logo-img,html[data-contrast="high"] img[alt*="INES"]
 /* VÍDEO EM LIBRAS ao lado do título — sem moldura, fundo transparente */
 .hero-wrap{align-items:center}
 .hero-libras{display:flex;align-items:center;justify-content:center;position:relative}
-/* linha branca limpa logo abaixo do intérprete (para não "flutuar") */
-.hero-libras::after{content:"";position:absolute;left:50%;bottom:2px;transform:translateX(-50%);
-  width:72%;height:3px;border-radius:3px;pointer-events:none;z-index:2;
-  background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.9) 50%,rgba(255,255,255,0) 100%)}
+/* linha branca limpa alinhada à base do intérprete (esmaecimento só nas pontas) */
+.hero-libras::after{content:"";position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+  width:62%;height:3px;border-radius:3px;pointer-events:none;z-index:2;
+  background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.95) 7%,rgba(255,255,255,.95) 93%,rgba(255,255,255,0) 100%)}
 html[data-contrast="high"] .hero-libras::after{background:#fff}
 .wl-video{width:100%;max-width:400px;height:auto;display:block;background:transparent;border:0;
   filter:drop-shadow(0 14px 30px rgba(0,0,0,.32))}
@@ -418,7 +418,7 @@ tbody tr:hover{background:var(--surface-2)}
       <div class="section-head">
         <span class="tag">Benefícios</span>
         <h2>Vantagens de fazer parte da rede</h2>
-        <p class="muted">Serviços pensados para a comunidade surda e ouvinte egressa do INES, com acessibilidade como princípio.</p>
+        <p class="muted">Serviços e oportunidades desenvolvidos para a comunidade de egressos surdos e ouvintes do INES.</p>
       </div>
       <div class="grid bento" id="benefits-grid"></div>
     </div>
