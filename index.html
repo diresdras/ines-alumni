@@ -166,6 +166,8 @@ section.block{padding:clamp(34px,6vw,64px) 0}
 .event-card .date b{display:block;font-size:1.3rem;color:var(--brand-800)}
 .event-card .date span{font-size:.7rem;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
 .story{display:flex;gap:16px;align-items:flex-start;padding:20px}
+.story-photo{width:58px;height:58px;border-radius:50%;flex:0 0 auto;object-fit:cover;background:var(--surface-2);
+  border:2px solid var(--surface-2)}
 .avatar{width:54px;height:54px;border-radius:50%;flex:0 0 auto;background:linear-gradient(135deg,var(--brand-600),var(--brand-accent));
   display:grid;place-items:center;color:#fff;font-weight:800}
 .map-band{background:var(--brand-900);color:#fff}
@@ -933,9 +935,10 @@ const EVENTS=[
   {dd:"03",mm:"AGO",t:"Semana do Egresso INES",x:"Palestras, oficinas e networking — tudo acessível."},
   {dd:"22",mm:"AGO",t:"Feira de Carreiras Inclusivas",x:"Empresas comprometidas com a inclusão de surdos."}
 ];
+/* Fotos: Pexels (licença livre, uso comercial sem atribuição) — pexels.com */
 const STORIES=[
-  {n:"João P.",c:"Letras · 2012",x:"“Encontrei na rede um mentor que me ajudou a abrir minha escola de Libras.”"},
-  {n:"Aline S.",c:"Pedagogia · 2016",x:"“As vagas com acessibilidade mudaram a minha trajetória profissional.”"}
+  {n:"João P.",c:"Letras · 2012",x:"“Encontrei na rede um mentor que me ajudou a abrir minha escola de Libras.”",img:"https://images.pexels.com/photos/35503892/pexels-photo-35503892.jpeg?auto=compress&cs=tinysrgb&w=240&h=240&fit=crop"},
+  {n:"Aline S.",c:"Pedagogia · 2016",x:"“As vagas com acessibilidade mudaram a minha trajetória profissional.”",img:"https://images.pexels.com/photos/38197025/pexels-photo-38197025.jpeg?auto=compress&cs=tinysrgb&w=240&h=240&fit=crop"}
 ];
 const JOBS=[
   {co:"In",t:"Analista de Acessibilidade",m:"Inclui Tech · Remoto · Libras nativa"},
@@ -1049,7 +1052,7 @@ function render(){
     <div class="body"><h3>${e.t}</h3><p class="muted" style="font-size:.92rem">${e.x}</p>
     <button class="btn btn--ghost btn--sm" data-go="login">Inscrever-se</button></div></article>`).join('');
   document.getElementById('stories-list').innerHTML=STORIES.map(s=>`
-    <article class="card story"><span class="avatar" aria-hidden="true">${s.n[0]}</span><div><p style="font-size:1.02rem;margin-bottom:.4em">${s.x}</p>
+    <article class="card story"><img class="story-photo" src="${s.img}" alt="Retrato de ${s.n}, egresso(a) do INES" loading="lazy" /><div><p style="font-size:1.02rem;margin-bottom:.4em">${s.x}</p>
     <b>${s.n}</b> <span class="muted">· ${s.c}</span></div></article>`).join('');
   document.getElementById('jobs-list').innerHTML=JOBS.map(j=>`
     <div class="list-item job"><span class="co" aria-hidden="true">${j.co}</span><div><b>${j.t}</b><div class="muted" style="font-size:.86rem">${j.m}</div></div>
