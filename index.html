@@ -1017,7 +1017,8 @@ const BENEFITS=[
   {ico:"mentor",th:"green",t:"Mentoria",x:"Auxilie na evolução de alunos do INES",span:"span2"},
   {ico:"map",th:"slate",t:"Diretório e mapa",x:"Encontre colegas",span:"span2"},
   {ico:"ticket",th:"blue",t:"Eventos exclusivos",x:"Com interpretação",span:"span3"},
-  {ico:"globe",th:"teal",t:"Rede de egressos",x:"Networking por área",span:"span3"}
+  {ico:"globe",th:"teal",t:"Rede de egressos",x:"Networking por área",span:"span3"},
+  {ico:"chart",th:"blueGreen",t:"Painel de dados: Pesquisa Egressos",x:"Resultados da pesquisa de egressos do INES",url:"dashboard-egressos.html",span:"span6",tall:true}
 ];
 const PERKS=[
   {co:"Li",t:"Curso de Libras Avançado",m:"Escola Mãos que Falam",d:"30% off"},
@@ -1065,12 +1066,17 @@ function render(){
     <div><b>${m.n}</b><div class="muted" style="font-size:.85rem">${m.c}</div></div></div><span class="tag">${m.a}</span>
     <button class="btn btn--primary btn--sm" style="margin-top:12px;width:100%;justify-content:center">Solicitar mentoria</button></article>`).join('');
   const benefitsEl=document.getElementById('benefits-grid');
-  if(benefitsEl)benefitsEl.innerHTML=BENEFITS.map(s=>`
-    <a class="tile ${s.span}${s.tall?' tall':''}" href="#" data-go="login" aria-label="${s.t} — ${s.x}">
+  if(benefitsEl)benefitsEl.innerHTML=BENEFITS.map(s=>{
+    const inner=`
       <span class="bg" aria-hidden="true">${tileArt(s.th)}</span>
       <span class="ico" aria-hidden="true">${ICONS[s.ico]}</span>
-      <span class="label"><b>${s.t}</b><span>${s.x}</span></span>
-    </a>`).join('');
+      ${s.url?'<span class="arrow" aria-hidden="true">↗</span>':''}
+      <span class="label"><b>${s.t}</b><span>${s.x}</span></span>`;
+    const cls=`tile ${s.span}${s.tall?' tall':''}`;
+    return s.url
+      ? `<a class="${cls}" href="${s.url}" aria-label="${s.t} — ${s.x} (abre o painel de dados)">${inner}</a>`
+      : `<a class="${cls}" href="#" data-go="login" aria-label="${s.t} — ${s.x}">${inner}</a>`;
+  }).join('');
   document.getElementById('services-grid').innerHTML=SERVICES.map(s=>{
     const inner=`
       <span class="bg" aria-hidden="true">${tileArt(s.th)}</span>
