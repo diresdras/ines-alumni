@@ -242,15 +242,36 @@ section.block{padding:clamp(34px,6vw,64px) 0}
   font-weight:800;font-size:1.4rem;color:var(--brand-800)}
 html[data-contrast="high"] .ring{background:conic-gradient(#000 calc(var(--p)*1%),#fff 0);border:2px solid #000}
 
-/* GRADE DE SERVIÇOS */
-.services-grid{grid-template-columns:repeat(3,1fr)}
-.svc{position:relative;border:1px solid var(--line);border-radius:var(--radius);padding:20px;background:var(--surface);
-  text-align:left;cursor:pointer;font:inherit;color:var(--ink);box-shadow:var(--shadow);transition:.15s;display:block}
-.svc:hover{transform:translateY(-2px);border-color:var(--brand-600)}
-.svc .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:1.35rem;margin-bottom:12px;color:#fff}
-.svc b{display:block;font-size:1.05rem;color:var(--brand-900);margin-bottom:3px}
-.svc span{font-size:.88rem;color:var(--ink-soft)}
-@media (max-width:760px){.welcome-row,.services-grid{grid-template-columns:1fr}}
+/* GRADE DE SERVIÇOS — MOSAICO VISUAL (bento) */
+.bento{grid-template-columns:repeat(6,1fr);gap:calc(16px * var(--space-scale))}
+.tile{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:200px;border-radius:18px;overflow:hidden;cursor:pointer;font:inherit;color:#fff;
+  text-align:left;border:0;padding:0;box-shadow:var(--shadow);transition:transform .18s, box-shadow .18s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(6,42,64,.22)}
+.tile:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.tile.span2{grid-column:span 2}
+.tile.span3{grid-column:span 3}
+.tile.span6{grid-column:span 6}
+.tile.tall{min-height:240px}
+/* fundo ilustrado: gradiente temático + textura */
+.tile .bg{position:absolute;inset:0;z-index:0}
+.tile .bg svg{position:absolute;width:100%;height:100%}
+/* scrim para contraste AAA do texto branco */
+.tile::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(6,18,30,.05) 0%,rgba(6,18,30,.25) 45%,rgba(6,18,30,.78) 100%)}
+.tile .ico{position:absolute;top:18px;left:18px;z-index:2;width:54px;height:54px}
+.tile .ico svg{width:100%;height:100%;stroke:#fff;fill:none;stroke-width:1.6;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
+.tile .label{position:relative;z-index:2;padding:16px 18px}
+.tile .label b{display:block;font-size:1.3rem;line-height:1.15;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.tile .label span{font-size:.9rem;color:#EAF2F6;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.tile .arrow{position:absolute;top:20px;right:18px;z-index:2;opacity:.9;font-size:1.2rem}
+html[data-contrast="high"] .tile{border:2px solid #000}
+html[data-contrast="high"] .tile::after{background:rgba(0,0,0,.78)}
+html[data-contrast="high"] .tile .ico svg{stroke:#ff0}
+@media (max-width:900px){.bento{grid-template-columns:repeat(4,1fr)}.tile.span3{grid-column:span 2}.tile.span6{grid-column:span 4}}
+@media (max-width:600px){.welcome-row{grid-template-columns:1fr}
+  .bento{grid-template-columns:repeat(2,1fr)}.tile.span2,.tile.span3,.tile.span6{grid-column:span 2}.tile{min-height:150px}}
 
 /* TABELAS */
 table{width:100%;border-collapse:collapse;font-size:.92rem}
@@ -388,14 +409,7 @@ tbody tr:hover{background:var(--surface-2)}
         <h2>Vantagens de fazer parte da rede</h2>
         <p class="muted">Serviços pensados para a comunidade surda e ouvinte egressa do INES, com acessibilidade como princípio.</p>
       </div>
-      <div class="grid cards-3">
-        <div class="card feature"><div class="ic" aria-hidden="true">🪪</div><h3>Carteirinha digital de egresso</h3><p class="muted">Identificação oficial com QR Code para comprovar o vínculo com o INES.</p></div>
-        <div class="card feature"><div class="ic" aria-hidden="true">💼</div><h3>Vagas com acessibilidade</h3><p class="muted">Banco de vagas de empresas comprometidas com a inclusão de profissionais surdos.</p></div>
-        <div class="card feature"><div class="ic" aria-hidden="true">🎓</div><h3>Diploma e histórico digital</h3><p class="muted">Documentos certificados disponíveis para download a qualquer momento.</p></div>
-        <div class="card feature"><div class="ic" aria-hidden="true">🤝</div><h3>Mentoria em Libras</h3><p class="muted">Conexão entre gerações de egressos para orientação acadêmica e de carreira.</p></div>
-        <div class="card feature"><div class="ic" aria-hidden="true">🌎</div><h3>Diretório e mapa global</h3><p class="muted">Encontre colegas por curso, ano de formatura, cidade e área de atuação.</p></div>
-        <div class="card feature"><div class="ic" aria-hidden="true">🎫</div><h3>Eventos exclusivos</h3><p class="muted">Encontros, cursos e reencontros de turma com interpretação em Libras.</p></div>
-      </div>
+      <div class="grid bento" id="benefits-grid"></div>
     </div>
   </section>
 
@@ -583,9 +597,9 @@ tbody tr:hover{background:var(--surface-2)}
           </div>
         </div>
 
-        <!-- GRADE DE SERVIÇOS -->
+        <!-- GRADE DE SERVIÇOS (mosaico visual) -->
         <h3 style="margin-bottom:14px">Serviços</h3>
-        <div class="grid services-grid" id="services-grid"></div>
+        <div class="grid bento" id="services-grid"></div>
       </section>
 
       <!-- CARTEIRINHA -->
@@ -945,20 +959,60 @@ const ADMIN_ALUMNI=[
   {n:"Paula Reis",c:"Informática",t:"2021",l:"Português",s:"ok",st:"Ativo"},
   {n:"Sérgio Lima",c:"Letras",t:"2009",l:"Libras",s:"ok",st:"Ativo"}
 ];
-/* Grade de serviços do painel do egresso (cores INES) */
+/* Ícones vetoriais originais (linha) — desenhados para o INES Alumni */
+const ICONS={
+  email:'<svg viewBox="0 0 64 64"><rect x="10" y="16" width="44" height="32" rx="4"/><path d="M12 19 32 36 52 19"/></svg>',
+  doc:'<svg viewBox="0 0 64 64"><path d="M20 10h16l10 10v34H20z"/><path d="M36 10v10h10"/><path d="M26 32h14M26 40h14"/></svg>',
+  id:'<svg viewBox="0 0 64 64"><rect x="10" y="16" width="44" height="32" rx="4"/><circle cx="24" cy="30" r="5"/><path d="M17 42c1-5 13-5 14 0"/><path d="M38 28h12M38 34h12M38 40h8"/></svg>',
+  book:'<svg viewBox="0 0 64 64"><path d="M32 18c-5-4-14-4-18-2v30c4-2 13-2 18 2 5-4 14-4 18-2V16c-4-2-13-2-18 2z"/><path d="M32 18v32"/></svg>',
+  users:'<svg viewBox="0 0 64 64"><circle cx="24" cy="24" r="7"/><circle cx="42" cy="27" r="6"/><path d="M12 48c1-9 23-9 24 0M36 47c1-7 16-7 17 0"/></svg>',
+  wifi:'<svg viewBox="0 0 64 64"><path d="M14 26c10-9 26-9 36 0M21 34c6-5 16-5 22 0M28 42c3-2 5-2 8 0"/><circle cx="32" cy="48" r="2.5" fill="#fff" stroke="none"/></svg>',
+  tag:'<svg viewBox="0 0 64 64"><path d="M14 14h18l18 18-18 18-18-18z"/><circle cx="24" cy="24" r="3.5"/></svg>',
+  case:'<svg viewBox="0 0 64 64"><rect x="12" y="22" width="40" height="26" rx="3"/><path d="M24 22v-5h16v5M12 32h40"/></svg>',
+  map:'<svg viewBox="0 0 64 64"><path d="M32 12c8 0 14 6 14 14 0 10-14 26-14 26S18 36 18 26c0-8 6-14 14-14z"/><circle cx="32" cy="26" r="5"/></svg>',
+  mentor:'<svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="8"/><path d="M16 50c2-11 30-11 32 0"/><path d="M44 16l4-4M48 22h5"/></svg>',
+  ticket:'<svg viewBox="0 0 64 64"><path d="M12 22h40v8a4 4 0 000 8v4H12v-4a4 4 0 000-8z"/><path d="M40 22v20" stroke-dasharray="3 4"/></svg>',
+  globe:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20"/><path d="M12 32h40M32 12c8 8 8 32 0 40M32 12c-8 8-8 32 0 40"/></svg>'
+};
+/* fundo ilustrado por tema: gradiente + formas abstratas (original) */
+const THEMES={
+  blue:['#15295A','#214287'], blueGreen:['#15396A','#0A5A30'], green:['#0A5A30','#118745'],
+  teal:['#0E5B66','#1B6B8F'], slate:['#1C3A78','#2A4E96'], gold:['#5A4A12','#8A6D00'], deep:['#0B2236','#15295A']
+};
+function tileArt(theme){
+  const [a,b]=THEMES[theme]||THEMES.blue;
+  return `<svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="g_${theme}" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>
+    <rect width="400" height="240" fill="url(#g_${theme})"/>
+    <circle cx="330" cy="40" r="120" fill="#fff" opacity="0.06"/>
+    <circle cx="360" cy="200" r="80" fill="#fff" opacity="0.05"/>
+    <path d="M0 200 Q120 150 400 210 L400 240 L0 240Z" fill="#fff" opacity="0.05"/></svg>`;
+}
+/* Grade de serviços (mosaico visual) */
 const SERVICES=[
-  {ic:"✉️",bg:"var(--brand-900)",t:"E-mail",x:"Crie seu endereço @alumni.ines.gov.br.",p:"al-email"},
-  {ic:"🎓",bg:"var(--brand-700)",t:"Diploma e histórico",x:"Baixe seus documentos certificados.",p:"al-docs"},
-  {ic:"🪪",bg:"var(--ines-blue)",t:"Carteirinha",x:"Identificação digital de egresso com QR.",p:"al-card"},
-  {ic:"📚",bg:"var(--brand-600)",t:"Biblioteca",x:"Acesse artigos e teses pela VPN.",p:"al-biblioteca"},
-  {ic:"👥",bg:"var(--brand-accent)",t:"Turmas",x:"Procure colegas da sua turma por ano.",p:"al-turmas"},
-  {ic:"📶",bg:"var(--ines-green)",t:"Conectividade",x:"Wi-Fi institucional e credenciais.",p:"al-wifi"},
-  {ic:"🏷️",bg:"var(--gold)",t:"Vantagens",x:"Descontos dos nossos parceiros.",p:"al-vantagens"},
-  {ic:"💼",bg:"var(--brand-800)",t:"Oportunidades",x:"Encontre ou publique vagas.",p:"al-jobs"},
-  {ic:"🗺️",bg:"var(--brand-700)",t:"Mapa",x:"Egressos próximos da sua região.",p:"al-mapa"},
-  {ic:"🤝",bg:"var(--brand-accent)",t:"Mentoria",x:"Apoie a evolução de novos alunos.",p:"al-mentoria"},
-  {ic:"🎫",bg:"var(--ines-blue)",t:"Eventos",x:"Encontros e reencontros de turma.",p:"al-events"},
-  {ic:"🌐",bg:"var(--brand-600)",t:"Networking",x:"Conecte-se por área de atuação.",p:"al-network"}
+  {ico:"email",th:"deep",t:"E-mail",x:"Seu endereço @alumni.ines",p:"al-email",span:"span3",tall:true},
+  {ico:"id",th:"blueGreen",t:"Carteirinha",x:"Identidade digital com QR",p:"al-card",span:"span3",tall:true},
+  {ico:"doc",th:"teal",t:"Diploma e histórico",x:"Documentos certificados",p:"al-docs",span:"span2"},
+  {ico:"book",th:"blue",t:"Biblioteca",x:"Acervo e Libras",p:"al-biblioteca",span:"span2"},
+  {ico:"users",th:"green",t:"Turmas",x:"Colegas por ano",p:"al-turmas",span:"span2"},
+  {ico:"case",th:"blueGreen",t:"Oportunidades",x:"Vagas e estágios",p:"al-jobs",span:"span3"},
+  {ico:"mentor",th:"green",t:"Mentoria",x:"Conexão entre gerações",p:"al-mentoria",span:"span3"},
+  {ico:"wifi",th:"teal",t:"Conectividade",x:"Wi-Fi institucional",p:"al-wifi",span:"span2"},
+  {ico:"tag",th:"gold",t:"Vantagens",x:"Descontos de parceiros",p:"al-vantagens",span:"span2"},
+  {ico:"map",th:"teal",t:"Mapa",x:"Egressos perto de você",p:"al-mapa",span:"span2"},
+  {ico:"ticket",th:"slate",t:"Eventos",x:"Encontros acessíveis",p:"al-events",span:"span3"},
+  {ico:"globe",th:"blue",t:"Networking",x:"Conecte-se por área",p:"al-network",span:"span3"}
+];
+/* Benefícios da home (mosaico visual, leva ao cadastro/login) */
+const BENEFITS=[
+  {ico:"id",th:"blueGreen",t:"Carteirinha digital",x:"Vínculo com QR Code",span:"span3",tall:true},
+  {ico:"case",th:"deep",t:"Vagas acessíveis",x:"Empresas inclusivas",span:"span3",tall:true},
+  {ico:"doc",th:"teal",t:"Diploma e histórico",x:"Documentos digitais",span:"span2"},
+  {ico:"mentor",th:"green",t:"Mentoria em Libras",x:"Entre gerações",span:"span2"},
+  {ico:"map",th:"slate",t:"Diretório e mapa",x:"Encontre colegas",span:"span2"},
+  {ico:"ticket",th:"blue",t:"Eventos exclusivos",x:"Com interpretação",span:"span3"},
+  {ico:"globe",th:"teal",t:"Rede de egressos",x:"Networking por área",span:"span3"}
 ];
 const PERKS=[
   {co:"Li",t:"Curso de Libras Avançado",m:"Escola Mãos que Falam",d:"30% off"},
@@ -1005,9 +1059,20 @@ function render(){
     <article class="card" style="padding:18px"><div style="display:flex;gap:12px;align-items:center;margin-bottom:10px"><span class="avatar" aria-hidden="true">${m.n[0]}</span>
     <div><b>${m.n}</b><div class="muted" style="font-size:.85rem">${m.c}</div></div></div><span class="tag">${m.a}</span>
     <button class="btn btn--primary btn--sm" style="margin-top:12px;width:100%;justify-content:center">Solicitar mentoria</button></article>`).join('');
+  const benefitsEl=document.getElementById('benefits-grid');
+  if(benefitsEl)benefitsEl.innerHTML=BENEFITS.map(s=>`
+    <a class="tile ${s.span}${s.tall?' tall':''}" href="#" data-go="login" aria-label="${s.t} — ${s.x}">
+      <span class="bg" aria-hidden="true">${tileArt(s.th)}</span>
+      <span class="ico" aria-hidden="true">${ICONS[s.ico]}</span>
+      <span class="label"><b>${s.t}</b><span>${s.x}</span></span>
+    </a>`).join('');
   document.getElementById('services-grid').innerHTML=SERVICES.map(s=>`
-    <button class="svc" data-panel-link="${s.p}"><span class="ic" aria-hidden="true" style="background:${s.bg}">${s.ic}</span>
-    <b>${s.t}</b><span>${s.x}</span></button>`).join('');
+    <button class="tile ${s.span}${s.tall?' tall':''}" data-panel-link="${s.p}" aria-label="${s.t} — ${s.x}">
+      <span class="bg" aria-hidden="true">${tileArt(s.th)}</span>
+      <span class="ico" aria-hidden="true">${ICONS[s.ico]}</span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="label"><b>${s.t}</b><span>${s.x}</span></span>
+    </button>`).join('');
   document.getElementById('perks-list').innerHTML=PERKS.map(p=>`
     <article class="card" style="padding:18px"><div style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
     <span class="co" aria-hidden="true" style="width:46px;height:46px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;font-weight:800;color:var(--brand-800)">${p.co}</span>
