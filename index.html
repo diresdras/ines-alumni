@@ -138,14 +138,12 @@ html[data-contrast="high"] .logo-img,html[data-contrast="high"] img[alt*="INES"]
 .hero p{font-size:1.12rem;color:#E6EEF3;max-width:48ch}
 .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
 .hero-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius);padding:22px}
-/* BOAS-VINDAS EM LIBRAS — seção branca limpa, vídeo sem moldura */
-.welcome-libras{background:var(--surface);padding:clamp(26px,4vw,40px) 0 8px}
-.welcome-libras .wrap{display:flex;flex-direction:column;align-items:center;text-align:center}
-.wl-title{color:var(--brand-900);font-size:clamp(1.5rem,3vw,2rem);margin:0 0 14px}
-.wl-video{width:100%;max-width:420px;height:auto;display:block;background:transparent;border:0}
-/* hero em coluna única (sem o vídeo) */
-.hero-wrap{grid-template-columns:1fr !important}
-.hero-wrap>div{max-width:60ch}
+/* VÍDEO EM LIBRAS ao lado do título — sem moldura, fundo transparente */
+.hero-wrap{align-items:center}
+.hero-libras{display:flex;align-items:center;justify-content:center}
+.wl-video{width:100%;max-width:400px;height:auto;display:block;background:transparent;border:0;
+  filter:drop-shadow(0 14px 30px rgba(0,0,0,.32))}
+html[data-contrast="high"] .wl-video{filter:none}
 .hero-card .libras{aspect-ratio:16/10;border-radius:10px;background:repeating-linear-gradient(45deg,#0a2436,#0a2436 12px,#0d2c43 12px,#0d2c43 24px);
   display:grid;place-items:center;text-align:center;color:#cfe0ea;border:1px dashed rgba(255,255,255,.4);position:relative}
 .libras-play{width:64px;height:64px;border-radius:50%;background:#fff;color:var(--brand-900);display:grid;place-items:center;font-size:1.5rem;border:0;cursor:pointer}
@@ -376,20 +374,8 @@ tbody tr:hover{background:var(--surface-2)}
      =================================================================== -->
 <div class="view is-active" id="view-public" role="region" aria-label="Site público INES Alumni">
 
-  <!-- BOAS-VINDAS EM LIBRAS — seção limpa, sem moldura (topo) -->
-  <section class="welcome-libras" id="inicio" aria-label="Boas-vindas em Libras">
-    <div class="wrap">
-      <h2 class="wl-title">Boas-vindas de volta ao INES</h2>
-      <video class="wl-video" autoplay muted loop playsinline
-             poster="libras_welcome_poster.jpg"
-             aria-label="Vídeo de boas-vindas em Língua Brasileira de Sinais (Libras)">
-        <source src="libras_welcome.mp4" type="video/mp4" />
-      </video>
-    </div>
-  </section>
-
-  <!-- HERO -->
-  <div class="hero">
+  <!-- HERO com vídeo em Libras ao lado (sem moldura, fundo transparente) -->
+  <div class="hero" id="inicio">
     <div class="wrap hero-wrap">
       <div>
         <h1>Sempre parte do INES.<br>Conectados para a vida toda.</h1>
@@ -398,6 +384,13 @@ tbody tr:hover{background:var(--surface-2)}
           <a class="btn btn--primary" href="#" data-go="public" data-section="cadastro">Quero me cadastrar</a>
           <a class="btn btn--light" href="#" data-go="login">Já sou cadastrado</a>
         </div>
+      </div>
+      <div class="hero-libras">
+        <video class="wl-video" autoplay muted loop playsinline
+               poster="libras_welcome_poster.png"
+               aria-label="Vídeo de boas-vindas em Língua Brasileira de Sinais (Libras)">
+          <source src="libras_welcome.webm" type="video/webm" />
+        </video>
       </div>
     </div>
   </div>
