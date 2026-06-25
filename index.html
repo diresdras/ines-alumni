@@ -138,6 +138,12 @@ html[data-contrast="high"] .logo-img,html[data-contrast="high"] img[alt*="INES"]
 .hero p{font-size:1.12rem;color:#E6EEF3;max-width:48ch}
 .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
 .hero-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius);padding:22px}
+/* Vídeo em Libras LIMPO — sem caixa, sem moldura, fundo transparente */
+.hero-libras{display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.libras-video{width:100%;max-width:440px;height:auto;display:block;background:transparent;
+  filter:drop-shadow(0 12px 30px rgba(0,0,0,.28))}
+.libras-cap{margin:8px 0 0;font-size:.9rem;color:#E6EEF3;text-align:center}
+html[data-contrast="high"] .libras-video{filter:none}
 .hero-card .libras{aspect-ratio:16/10;border-radius:10px;background:repeating-linear-gradient(45deg,#0a2436,#0a2436 12px,#0d2c43 12px,#0d2c43 24px);
   display:grid;place-items:center;text-align:center;color:#cfe0ea;border:1px dashed rgba(255,255,255,.4);position:relative}
 .libras-play{width:64px;height:64px;border-radius:50%;background:#fff;color:var(--brand-900);display:grid;place-items:center;font-size:1.5rem;border:0;cursor:pointer}
@@ -380,14 +386,13 @@ tbody tr:hover{background:var(--surface-2)}
           <a class="btn btn--light" href="#" data-go="login">Já sou cadastrado</a>
         </div>
       </div>
-      <div class="hero-card">
-        <p style="color:#fff;font-weight:700;margin-bottom:10px">Boas-vindas em Libras</p>
-        <div class="libras" role="img" aria-label="Vídeo de boas-vindas em Língua Brasileira de Sinais (Libras) com legendas">
-          <div>
-            <button class="libras-play" aria-label="Reproduzir vídeo de boas-vindas em Libras" data-libras="Mensagem de boas-vindas da Rede de Egressos do INES, apresentada em Libras com legendas e áudio descritivo.">▶</button>
-            <p style="margin:.6em 0 0;font-size:.85rem">Vídeo em Libras · com legendas</p>
-          </div>
-        </div>
+      <div class="hero-libras">
+        <video class="libras-video" autoplay muted loop playsinline
+               poster="libras_welcome_poster.png"
+               aria-label="Vídeo de boas-vindas em Língua Brasileira de Sinais (Libras)">
+          <source src="libras_welcome.webm" type="video/webm" />
+        </video>
+        <p class="libras-cap">Boas-vindas em Libras · com legendas</p>
       </div>
     </div>
   </div>
