@@ -972,7 +972,8 @@ const ICONS={
   map:'<svg viewBox="0 0 64 64"><path d="M32 12c8 0 14 6 14 14 0 10-14 26-14 26S18 36 18 26c0-8 6-14 14-14z"/><circle cx="32" cy="26" r="5"/></svg>',
   mentor:'<svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="8"/><path d="M16 50c2-11 30-11 32 0"/><path d="M44 16l4-4M48 22h5"/></svg>',
   ticket:'<svg viewBox="0 0 64 64"><path d="M12 22h40v8a4 4 0 000 8v4H12v-4a4 4 0 000-8z"/><path d="M40 22v20" stroke-dasharray="3 4"/></svg>',
-  globe:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20"/><path d="M12 32h40M32 12c8 8 8 32 0 40M32 12c-8 8-8 32 0 40"/></svg>'
+  globe:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20"/><path d="M12 32h40M32 12c8 8 8 32 0 40M32 12c-8 8-8 32 0 40"/></svg>',
+  chart:'<svg viewBox="0 0 64 64"><path d="M14 14v36h36"/><rect x="22" y="32" width="6" height="14"/><rect x="33" y="24" width="6" height="22"/><rect x="44" y="18" width="6" height="28"/></svg>'
 };
 /* fundo ilustrado por tema: gradiente + formas abstratas (original) */
 const THEMES={
@@ -991,6 +992,7 @@ function tileArt(theme){
 }
 /* Grade de serviços (mosaico visual) */
 const SERVICES=[
+  {ico:"chart",th:"blueGreen",t:"Painel de dados: Pesquisa Egressos",x:"Resultados da pesquisa de egressos do INES",url:"dashboard-egressos.html",span:"span6",tall:true},
   {ico:"email",th:"deep",t:"E-mail",x:"Seu endereço @alumni.ines",p:"al-email",span:"span3",tall:true},
   {ico:"id",th:"blueGreen",t:"Carteirinha",x:"Identidade digital com QR",p:"al-card",span:"span3",tall:true},
   {ico:"doc",th:"teal",t:"Diploma e histórico",x:"Documentos certificados",p:"al-docs",span:"span2"},
@@ -1066,13 +1068,17 @@ function render(){
       <span class="ico" aria-hidden="true">${ICONS[s.ico]}</span>
       <span class="label"><b>${s.t}</b><span>${s.x}</span></span>
     </a>`).join('');
-  document.getElementById('services-grid').innerHTML=SERVICES.map(s=>`
-    <button class="tile ${s.span}${s.tall?' tall':''}" data-panel-link="${s.p}" aria-label="${s.t} — ${s.x}">
+  document.getElementById('services-grid').innerHTML=SERVICES.map(s=>{
+    const inner=`
       <span class="bg" aria-hidden="true">${tileArt(s.th)}</span>
       <span class="ico" aria-hidden="true">${ICONS[s.ico]}</span>
-      <span class="arrow" aria-hidden="true">→</span>
-      <span class="label"><b>${s.t}</b><span>${s.x}</span></span>
-    </button>`).join('');
+      <span class="arrow" aria-hidden="true">${s.url?'↗':'→'}</span>
+      <span class="label"><b>${s.t}</b><span>${s.x}</span></span>`;
+    const cls=`tile ${s.span}${s.tall?' tall':''}`;
+    return s.url
+      ? `<a class="${cls}" href="${s.url}" aria-label="${s.t} — ${s.x} (abre o painel de dados)">${inner}</a>`
+      : `<button class="${cls}" data-panel-link="${s.p}" aria-label="${s.t} — ${s.x}">${inner}</button>`;
+  }).join('');
   document.getElementById('perks-list').innerHTML=PERKS.map(p=>`
     <article class="card" style="padding:18px"><div style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
     <span class="co" aria-hidden="true" style="width:46px;height:46px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;font-weight:800;color:var(--brand-800)">${p.co}</span>
