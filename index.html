@@ -140,7 +140,13 @@ html[data-contrast="high"] .logo-img,html[data-contrast="high"] img[alt*="INES"]
 .hero-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius);padding:22px}
 /* VÍDEO EM LIBRAS ao lado do título — sem moldura, fundo transparente */
 .hero-wrap{align-items:center}
-.hero-libras{display:flex;align-items:center;justify-content:center}
+.hero-libras{display:flex;align-items:center;justify-content:center;position:relative}
+/* linha/base branca suave sob o intérprete (para não "flutuar") */
+.hero-libras::after{content:"";position:absolute;left:50%;bottom:8px;transform:translateX(-50%);
+  width:66%;height:22px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at center,rgba(255,255,255,.5) 0%,rgba(255,255,255,.18) 45%,rgba(255,255,255,0) 75%);
+  filter:blur(2px)}
+html[data-contrast="high"] .hero-libras::after{display:none}
 .wl-video{width:100%;max-width:400px;height:auto;display:block;background:transparent;border:0;
   filter:drop-shadow(0 14px 30px rgba(0,0,0,.32))}
 html[data-contrast="high"] .wl-video{filter:none}
@@ -166,7 +172,7 @@ section.block{padding:clamp(34px,6vw,64px) 0}
 .event-card .date b{display:block;font-size:1.3rem;color:var(--brand-800)}
 .event-card .date span{font-size:.7rem;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
 .story{display:flex;gap:16px;align-items:flex-start;padding:20px}
-.story-photo{width:58px;height:58px;border-radius:50%;flex:0 0 auto;object-fit:cover;background:var(--surface-2);
+.story-photo{width:70px;height:70px;border-radius:50%;flex:0 0 auto;object-fit:cover;background:var(--surface-2);
   border:2px solid var(--surface-2)}
 .avatar{width:54px;height:54px;border-radius:50%;flex:0 0 auto;background:linear-gradient(135deg,var(--brand-600),var(--brand-accent));
   display:grid;place-items:center;color:#fff;font-weight:800}
@@ -938,8 +944,8 @@ const EVENTS=[
 ];
 /* Fotos: Pexels (licença livre, uso comercial sem atribuição) — pexels.com */
 const STORIES=[
-  {n:"João P.",c:"Letras · 2012",x:"“Encontrei na rede um mentor que me ajudou a abrir minha escola de Libras.”",img:"https://images.pexels.com/photos/35503892/pexels-photo-35503892.jpeg?auto=compress&cs=tinysrgb&w=240&h=240&fit=crop"},
-  {n:"Aline S.",c:"Pedagogia · 2016",x:"“As vagas com acessibilidade mudaram a minha trajetória profissional.”",img:"https://images.pexels.com/photos/38197025/pexels-photo-38197025.jpeg?auto=compress&cs=tinysrgb&w=240&h=240&fit=crop"}
+  {n:"João P.",c:"Pedagogia Bilíngue · 2012",x:"“Minha trajetória no INES despertou o interesse pela pesquisa. Hoje desenvolvo estudos sobre alfabetização bilíngue e continuo conectada à comunidade acadêmica.”",img:"https://images.pexels.com/photos/35503892/pexels-photo-35503892.jpeg?auto=compress&cs=tinysrgb&w=240&h=240&fit=crop"},
+  {n:"Aline S.",c:"Pedagogia Bilíngue · 2024 (Polo UFAM)",x:"“Hoje atuo como professora em uma escola bilíngue para surdos, desenvolvendo práticas pedagógicas que valorizam a Libras e promovem uma aprendizagem significativa. A formação no INES foi essencial para conquistar essa oportunidade.”",img:"https://images.pexels.com/photos/38197025/pexels-photo-38197025.jpeg?auto=compress&cs=tinysrgb&w=240&h=240&fit=crop"}
 ];
 const JOBS=[
   {co:"In",t:"Analista de Acessibilidade",m:"Inclui Tech · Remoto · Libras nativa"},
