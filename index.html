@@ -138,12 +138,14 @@ html[data-contrast="high"] .logo-img,html[data-contrast="high"] img[alt*="INES"]
 .hero p{font-size:1.12rem;color:#E6EEF3;max-width:48ch}
 .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
 .hero-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius);padding:22px}
-/* Vídeo em Libras LIMPO — sem caixa, sem moldura, fundo transparente */
-.hero-libras{display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
-.libras-video{width:100%;max-width:440px;height:auto;display:block;background:transparent;
-  filter:drop-shadow(0 12px 30px rgba(0,0,0,.28))}
-.libras-cap{margin:8px 0 0;font-size:.9rem;color:#E6EEF3;text-align:center}
-html[data-contrast="high"] .libras-video{filter:none}
+/* BOAS-VINDAS EM LIBRAS — seção branca limpa, vídeo sem moldura */
+.welcome-libras{background:var(--surface);padding:clamp(26px,4vw,40px) 0 8px}
+.welcome-libras .wrap{display:flex;flex-direction:column;align-items:center;text-align:center}
+.wl-title{color:var(--brand-900);font-size:clamp(1.5rem,3vw,2rem);margin:0 0 14px}
+.wl-video{width:100%;max-width:420px;height:auto;display:block;background:transparent;border:0}
+/* hero em coluna única (sem o vídeo) */
+.hero-wrap{grid-template-columns:1fr !important}
+.hero-wrap>div{max-width:60ch}
 .hero-card .libras{aspect-ratio:16/10;border-radius:10px;background:repeating-linear-gradient(45deg,#0a2436,#0a2436 12px,#0d2c43 12px,#0d2c43 24px);
   display:grid;place-items:center;text-align:center;color:#cfe0ea;border:1px dashed rgba(255,255,255,.4);position:relative}
 .libras-play{width:64px;height:64px;border-radius:50%;background:#fff;color:var(--brand-900);display:grid;place-items:center;font-size:1.5rem;border:0;cursor:pointer}
@@ -374,32 +376,35 @@ tbody tr:hover{background:var(--surface-2)}
      =================================================================== -->
 <div class="view is-active" id="view-public" role="region" aria-label="Site público INES Alumni">
 
-  <!-- HERO -->
-  <div class="hero" id="inicio">
+  <!-- BOAS-VINDAS EM LIBRAS — seção limpa, sem moldura (topo) -->
+  <section class="welcome-libras" id="inicio" aria-label="Boas-vindas em Libras">
     <div class="wrap">
+      <h2 class="wl-title">Boas-vindas de volta ao INES</h2>
+      <video class="wl-video" autoplay muted loop playsinline
+             poster="libras_welcome_poster.jpg"
+             aria-label="Vídeo de boas-vindas em Língua Brasileira de Sinais (Libras)">
+        <source src="libras_welcome.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap hero-wrap">
       <div>
-        <span class="tag" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.4)">Rede de Egressos · desde 1857</span>
         <h1>Sempre parte do INES.<br>Conectados para a vida toda.</h1>
-        <p>A plataforma que reúne ex-alunos do Instituto Nacional de Educação de Surdos: networking acessível em Libras, vagas, mentoria, eventos e serviços exclusivos para egressos.</p>
+        <p>A plataforma que reúne ex-alunos do Instituto Nacional de Educação de Surdos.</p>
         <div class="cta">
           <a class="btn btn--primary" href="#" data-go="public" data-section="cadastro">Quero me cadastrar</a>
           <a class="btn btn--light" href="#" data-go="login">Já sou cadastrado</a>
         </div>
-      </div>
-      <div class="hero-libras">
-        <video class="libras-video" autoplay muted loop playsinline
-               poster="libras_welcome_poster.png"
-               aria-label="Vídeo de boas-vindas em Língua Brasileira de Sinais (Libras)">
-          <source src="libras_welcome.webm" type="video/webm" />
-        </video>
-        <p class="libras-cap">Boas-vindas em Libras · com legendas</p>
       </div>
     </div>
   </div>
 
   <div class="wrap">
     <div class="stats" aria-label="Números da rede">
-      <div class="stat"><b>12.480</b><span>Egressos cadastrados</span></div>
+      <div class="stat"><b>190</b><span>Egressos cadastrados</span></div>
       <div class="stat"><b>167</b><span>Anos de história</span></div>
       <div class="stat"><b>320+</b><span>Vagas com acessibilidade</span></div>
       <div class="stat"><b>48</b><span>Mentores ativos</span></div>
@@ -806,7 +811,7 @@ tbody tr:hover{background:var(--surface-2)}
       <section class="panel is-active" id="ad-dash">
         <div class="app-head"><h1>Visão geral</h1><button class="btn btn--ghost btn--sm">Exportar relatório</button></div>
         <div class="grid kpis" style="margin-bottom:22px">
-          <div class="card kpi"><span>Egressos cadastrados</span><b>12.480</b><span class="trend">+214 no mês</span></div>
+          <div class="card kpi"><span>Egressos cadastrados</span><b>190</b><span class="trend">+214 no mês</span></div>
           <div class="card kpi"><span>Aprovações pendentes</span><b>23</b><span class="status warn" style="font-size:.8rem">Requer ação</span></div>
           <div class="card kpi"><span>Eventos ativos</span><b>6</b><span class="muted" style="font-size:.8rem">2 esta semana</span></div>
           <div class="card kpi"><span>Vagas publicadas</span><b>318</b><span class="trend">+12</span></div>
@@ -893,7 +898,7 @@ tbody tr:hover{background:var(--surface-2)}
           </div>
           <div class="card" style="padding:20px">
             <h3>Campanhas recentes</h3>
-            <div class="list-item"><div><b>Boas-vindas 2026.1</b><div class="muted" style="font-size:.85rem">Enviada · 12.480 egressos · com Libras</div></div><span class="status ok" style="margin-left:auto">● 64% abertura</span></div>
+            <div class="list-item"><div><b>Boas-vindas 2026.1</b><div class="muted" style="font-size:.85rem">Enviada · 190 egressos · com Libras</div></div><span class="status ok" style="margin-left:auto">● 64% abertura</span></div>
             <div class="list-item"><div><b>Convite Feira de Carreiras</b><div class="muted" style="font-size:.85rem">Agendada · 03/ago</div></div><span class="status pend" style="margin-left:auto">● Agendada</span></div>
           </div>
         </div>
@@ -1016,7 +1021,7 @@ const BENEFITS=[
   {ico:"id",th:"blueGreen",t:"Carteirinha digital",x:"Vínculo com QR Code",span:"span3",tall:true},
   {ico:"case",th:"deep",t:"Vagas acessíveis",x:"Empresas inclusivas",span:"span3",tall:true},
   {ico:"doc",th:"teal",t:"Diploma e histórico",x:"Documentos digitais",span:"span2"},
-  {ico:"mentor",th:"green",t:"Mentoria em Libras",x:"Entre gerações",span:"span2"},
+  {ico:"mentor",th:"green",t:"Mentoria",x:"Auxilie na evolução de alunos do INES",span:"span2"},
   {ico:"map",th:"slate",t:"Diretório e mapa",x:"Encontre colegas",span:"span2"},
   {ico:"ticket",th:"blue",t:"Eventos exclusivos",x:"Com interpretação",span:"span3"},
   {ico:"globe",th:"teal",t:"Rede de egressos",x:"Networking por área",span:"span3"}
