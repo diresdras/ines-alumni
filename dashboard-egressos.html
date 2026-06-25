@@ -16,6 +16,7 @@
   .spinner{width:42px;height:42px;border:4px solid #D4DCE2;border-top-color:var(--ines-green);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 14px}
   @keyframes spin{to{transform:rotate(360deg)}}
   #root{min-height:60vh}
+  .errbox{max-width:680px;margin:40px auto;padding:20px;border:1px solid #f3c2c2;background:#fff5f5;border-radius:12px;color:#9B1C1C;font-size:.95rem}
 </style>
 </head>
 <body>
@@ -29,7 +30,7 @@
 <script crossorigin src="https://unpkg.com/prop-types@15/prop-types.min.js"></script>
 <script crossorigin src="https://unpkg.com/recharts@2/umd/Recharts.min.js"></script>
 <script>
-var _reactJsxDevRuntime = require("react/jsx-dev-runtime");
+try {
 const {
   useState,
   useMemo,
@@ -10813,95 +10814,88 @@ function QChart({
     if (v && counts.hasOwnProperty(v)) counts[v]++;
   });
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  if (total === 0) return _reactJsxDevRuntime.jsxDEV("div", {
+  if (total === 0) return React.createElement("div", {
     style: {
       color: t.textMuted,
       fontSize: 12 * fs,
       padding: 16,
       textAlign: "center"
-    },
-    children: "Sem respostas para os filtros selecionados"
-  }, void 0, false);
+    }
+  }, "Sem respostas para os filtros selecionados");
   const pie = q.options.map(o => ({
     name: shortLabel(o),
     value: counts[o],
     pct: total ? Math.round(counts[o] / total * 1000) / 10 : 0,
     key: o
   })).filter(d => d.value > 0);
-  return _reactJsxDevRuntime.jsxDEV("div", {
+  return React.createElement("div", {
     style: {
       display: "flex",
       flexDirection: "column",
       alignItems: "center"
+    }
+  }, React.createElement(ResponsiveContainer, {
+    width: "100%",
+    height: 220
+  }, React.createElement(PieChart, null, React.createElement(Pie, {
+    data: pie,
+    cx: "50%",
+    cy: "50%",
+    outerRadius: 80,
+    innerRadius: 38,
+    dataKey: "value",
+    paddingAngle: 2,
+    label: ({
+      name,
+      pct
+    }) => `${pct}%`,
+    labelLine: {
+      stroke: t.textMuted
     },
-    children: [_reactJsxDevRuntime.jsxDEV(ResponsiveContainer, {
-      width: "100%",
-      height: 220,
-      children: _reactJsxDevRuntime.jsxDEV(PieChart, {
-        children: [_reactJsxDevRuntime.jsxDEV(Pie, {
-          data: pie,
-          cx: "50%",
-          cy: "50%",
-          outerRadius: 80,
-          innerRadius: 38,
-          dataKey: "value",
-          paddingAngle: 2,
-          label: ({
-            name,
-            pct
-          }) => `${pct}%`,
-          labelLine: {
-            stroke: t.textMuted
-          },
-          style: {
-            fontSize: 10 * fs
-          },
-          children: pie.map((d, i) => _reactJsxDevRuntime.jsxDEV(Cell, {
-            fill: getColor(d.key, q.options)
-          }, i, false))
-        }, void 0, false), _reactJsxDevRuntime.jsxDEV(Tooltip, {
-          contentStyle: {
-            background: t.tooltipBg,
-            border: `1px solid ${t.tooltipBorder}`,
-            borderRadius: 8,
-            color: t.text,
-            fontSize: 12 * fs
-          }
-        }, void 0, false)]
-      }, void 0, true)
-    }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-      style: {
-        display: "flex",
-        flexWrap: "wrap",
-        gap: 6,
-        justifyContent: "center",
-        marginTop: 4
-      },
-      children: q.options.map((o, i) => _reactJsxDevRuntime.jsxDEV("span", {
-        style: {
-          display: "flex",
-          alignItems: "center",
-          gap: 4,
-          fontSize: 10 * fs,
-          color: t.textSec
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("span", {
-          style: {
-            width: 7,
-            height: 7,
-            borderRadius: "50%",
-            background: getColor(o, q.options),
-            flexShrink: 0
-          }
-        }, void 0, false), shortLabel(o), ": ", _reactJsxDevRuntime.jsxDEV("b", {
-          style: {
-            color: t.text
-          },
-          children: counts[o]
-        }, void 0, false)]
-      }, i, true))
-    }, void 0, false)]
-  }, void 0, true);
+    style: {
+      fontSize: 10 * fs
+    }
+  }, pie.map((d, i) => React.createElement(Cell, {
+    key: i,
+    fill: getColor(d.key, q.options)
+  }))), React.createElement(Tooltip, {
+    contentStyle: {
+      background: t.tooltipBg,
+      border: `1px solid ${t.tooltipBorder}`,
+      borderRadius: 8,
+      color: t.text,
+      fontSize: 12 * fs
+    }
+  }))), React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 6,
+      justifyContent: "center",
+      marginTop: 4
+    }
+  }, q.options.map((o, i) => React.createElement("span", {
+    key: i,
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 4,
+      fontSize: 10 * fs,
+      color: t.textSec
+    }
+  }, React.createElement("span", {
+    style: {
+      width: 7,
+      height: 7,
+      borderRadius: "50%",
+      background: getColor(o, q.options),
+      flexShrink: 0
+    }
+  }), shortLabel(o), ": ", React.createElement("b", {
+    style: {
+      color: t.text
+    }
+  }, counts[o])))));
 }
 function Overview({
   filtered,
@@ -10966,157 +10960,140 @@ function Overview({
     sub: `${n ? Math.round(nFem / n * 100) : 0}% do filtrado`,
     ...t.kpi4
   }];
-  return _reactJsxDevRuntime.jsxDEV("div", {
-    children: [_reactJsxDevRuntime.jsxDEV("div", {
-      style: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))",
-        gap: 14,
-        marginBottom: 24
-      },
-      children: kpis.map((c, i) => _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          background: `linear-gradient(135deg,${c.grad})`,
-          borderRadius: 16,
-          padding: 20,
-          border: `1px solid ${c.brd}`
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            fontSize: 11,
-            color: c.accent,
-            letterSpacing: 1,
-            textTransform: "uppercase"
-          },
-          children: c.label
-        }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            fontSize: 34,
-            fontWeight: 800,
-            color: t.text,
-            letterSpacing: -1
-          },
-          children: c.val
-        }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            fontSize: 11,
-            color: t.textMuted
-          },
-          children: c.sub
-        }, void 0, false)]
-      }, i, true))
-    }, void 0, false), allRanked.length > 0 && _reactJsxDevRuntime.jsxDEV("div", {
-      style: {
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: 16,
-        marginBottom: 24
-      },
-      children: [_reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          background: t.card,
-          borderRadius: 16,
-          padding: 18,
-          border: `1px solid ${t.border}`
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("h3", {
-          style: {
-            fontSize: 13,
-            fontWeight: 700,
-            color: "#34d399",
-            marginBottom: 10
-          },
-          children: "🏆 Melhor Avaliadas"
-        }, void 0, false), top5.map((r, i) => _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginBottom: 6,
-            padding: "6px 10px",
-            background: t.cardDeep,
-            borderRadius: 10,
-            border: `1px solid ${t.border}`
-          },
-          children: [_reactJsxDevRuntime.jsxDEV("span", {
-            style: {
-              fontSize: 18,
-              fontWeight: 800,
-              color: "#10b981",
-              minWidth: 24
-            },
-            children: i + 1
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("span", {
-            style: {
-              flex: 1,
-              fontSize: 11,
-              color: t.text,
-              lineHeight: 1.3
-            },
-            children: r.question
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("span", {
-            style: {
-              fontSize: 14,
-              fontWeight: 800,
-              color: "#10b981"
-            },
-            children: [r.rate, "%"]
-          }, void 0, true)]
-        }, r.id, true))]
-      }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          background: t.card,
-          borderRadius: 16,
-          padding: 18,
-          border: `1px solid ${t.border}`
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("h3", {
-          style: {
-            fontSize: 13,
-            fontWeight: 700,
-            color: "#f97316",
-            marginBottom: 10
-          },
-          children: "⚠️ Pontos de Atenção"
-        }, void 0, false), bot5.map((r, i) => _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginBottom: 6,
-            padding: "6px 10px",
-            background: t.cardDeep,
-            borderRadius: 10,
-            border: `1px solid ${t.border}`
-          },
-          children: [_reactJsxDevRuntime.jsxDEV("span", {
-            style: {
-              fontSize: 18,
-              fontWeight: 800,
-              color: "#f97316",
-              minWidth: 24
-            },
-            children: i + 1
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("span", {
-            style: {
-              flex: 1,
-              fontSize: 11,
-              color: t.text,
-              lineHeight: 1.3
-            },
-            children: r.question
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("span", {
-            style: {
-              fontSize: 14,
-              fontWeight: 800,
-              color: "#f97316"
-            },
-            children: [r.rate, "%"]
-          }, void 0, true)]
-        }, r.id, true))]
-      }, void 0, true)]
-    }, void 0, true)]
-  }, void 0, true);
+  return React.createElement("div", null, React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))",
+      gap: 14,
+      marginBottom: 24
+    }
+  }, kpis.map((c, i) => React.createElement("div", {
+    key: i,
+    style: {
+      background: `linear-gradient(135deg,${c.grad})`,
+      borderRadius: 16,
+      padding: 20,
+      border: `1px solid ${c.brd}`
+    }
+  }, React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: c.accent,
+      letterSpacing: 1,
+      textTransform: "uppercase"
+    }
+  }, c.label), React.createElement("div", {
+    style: {
+      fontSize: 34,
+      fontWeight: 800,
+      color: t.text,
+      letterSpacing: -1
+    }
+  }, c.val), React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: t.textMuted
+    }
+  }, c.sub)))), allRanked.length > 0 && React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 16,
+      marginBottom: 24
+    }
+  }, React.createElement("div", {
+    style: {
+      background: t.card,
+      borderRadius: 16,
+      padding: 18,
+      border: `1px solid ${t.border}`
+    }
+  }, React.createElement("h3", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700,
+      color: "#34d399",
+      marginBottom: 10
+    }
+  }, "🏆 Melhor Avaliadas"), top5.map((r, i) => React.createElement("div", {
+    key: r.id,
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      marginBottom: 6,
+      padding: "6px 10px",
+      background: t.cardDeep,
+      borderRadius: 10,
+      border: `1px solid ${t.border}`
+    }
+  }, React.createElement("span", {
+    style: {
+      fontSize: 18,
+      fontWeight: 800,
+      color: "#10b981",
+      minWidth: 24
+    }
+  }, i + 1), React.createElement("span", {
+    style: {
+      flex: 1,
+      fontSize: 11,
+      color: t.text,
+      lineHeight: 1.3
+    }
+  }, r.question), React.createElement("span", {
+    style: {
+      fontSize: 14,
+      fontWeight: 800,
+      color: "#10b981"
+    }
+  }, r.rate, "%")))), React.createElement("div", {
+    style: {
+      background: t.card,
+      borderRadius: 16,
+      padding: 18,
+      border: `1px solid ${t.border}`
+    }
+  }, React.createElement("h3", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700,
+      color: "#f97316",
+      marginBottom: 10
+    }
+  }, "⚠️ Pontos de Atenção"), bot5.map((r, i) => React.createElement("div", {
+    key: r.id,
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      marginBottom: 6,
+      padding: "6px 10px",
+      background: t.cardDeep,
+      borderRadius: 10,
+      border: `1px solid ${t.border}`
+    }
+  }, React.createElement("span", {
+    style: {
+      fontSize: 18,
+      fontWeight: 800,
+      color: "#f97316",
+      minWidth: 24
+    }
+  }, i + 1), React.createElement("span", {
+    style: {
+      flex: 1,
+      fontSize: 11,
+      color: t.text,
+      lineHeight: 1.3
+    }
+  }, r.question), React.createElement("span", {
+    style: {
+      fontSize: 14,
+      fontWeight: 800,
+      color: "#f97316"
+    }
+  }, r.rate, "%"))))));
 }
 function FilterPanel({
   label,
@@ -11133,7 +11110,7 @@ function FilterPanel({
   const toggleArr = (arr, setArr, val) => {
     setArr(prev => prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val]);
   };
-  return _reactJsxDevRuntime.jsxDEV("div", {
+  return React.createElement("div", {
     style: {
       background: t.cardDeep,
       border: `2px solid ${color}`,
@@ -11141,99 +11118,86 @@ function FilterPanel({
       padding: 12,
       flex: 1,
       minWidth: 0
+    }
+  }, React.createElement("div", {
+    style: {
+      fontSize: 12,
+      fontWeight: 800,
+      color: color,
+      marginBottom: 8
+    }
+  }, label, " ", React.createElement("span", {
+    style: {
+      fontWeight: 400,
+      fontSize: 11,
+      color: t.textMuted
+    }
+  }, "(", count, ")")), React.createElement("div", {
+    style: {
+      marginBottom: 6
+    }
+  }, React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: t.textMuted,
+      marginBottom: 3
+    }
+  }, "Modalidade"), React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 4,
+      flexWrap: "wrap"
+    }
+  }, ["Presencial", "EaD"].map(v => React.createElement("button", {
+    key: v,
+    className: `ft ${fMod.includes(v) ? "a" : ""}`,
+    style: {
+      "--c": color
     },
-    children: [_reactJsxDevRuntime.jsxDEV("div", {
-      style: {
-        fontSize: 12,
-        fontWeight: 800,
-        color: color,
-        marginBottom: 8
-      },
-      children: [label, " ", _reactJsxDevRuntime.jsxDEV("span", {
-        style: {
-          fontWeight: 400,
-          fontSize: 11,
-          color: t.textMuted
-        },
-        children: ["(", count, ")"]
-      }, void 0, true)]
-    }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-      style: {
-        marginBottom: 6
-      },
-      children: [_reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          fontSize: 10,
-          color: t.textMuted,
-          marginBottom: 3
-        },
-        children: "Modalidade"
-      }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          display: "flex",
-          gap: 4,
-          flexWrap: "wrap"
-        },
-        children: ["Presencial", "EaD"].map(v => _reactJsxDevRuntime.jsxDEV("button", {
-          className: `ft ${fMod.includes(v) ? "a" : ""}`,
-          style: {
-            "--c": color
-          },
-          onClick: () => toggleArr(fMod, setFMod, v),
-          children: v
-        }, v, false))
-      }, void 0, false)]
-    }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-      style: {
-        marginBottom: 6
-      },
-      children: [_reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          fontSize: 10,
-          color: t.textMuted,
-          marginBottom: 3
-        },
-        children: "Identidade"
-      }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          display: "flex",
-          gap: 4,
-          flexWrap: "wrap"
-        },
-        children: ["Surdo(a)", "Ouvinte", "Outros"].map(v => _reactJsxDevRuntime.jsxDEV("button", {
-          className: `ft ${fId.includes(v) ? "a" : ""}`,
-          style: {
-            "--c": color
-          },
-          onClick: () => toggleArr(fId, setFId, v),
-          children: v
-        }, v, false))
-      }, void 0, false)]
-    }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-      children: [_reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          fontSize: 10,
-          color: t.textMuted,
-          marginBottom: 3
-        },
-        children: "Gênero"
-      }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          display: "flex",
-          gap: 4,
-          flexWrap: "wrap"
-        },
-        children: ["Masculino", "Feminino"].map(v => _reactJsxDevRuntime.jsxDEV("button", {
-          className: `ft ${fGen.includes(v) ? "a" : ""}`,
-          style: {
-            "--c": color
-          },
-          onClick: () => toggleArr(fGen, setFGen, v),
-          children: v
-        }, v, false))
-      }, void 0, false)]
-    }, void 0, true)]
-  }, void 0, true);
+    onClick: () => toggleArr(fMod, setFMod, v)
+  }, v)))), React.createElement("div", {
+    style: {
+      marginBottom: 6
+    }
+  }, React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: t.textMuted,
+      marginBottom: 3
+    }
+  }, "Identidade"), React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 4,
+      flexWrap: "wrap"
+    }
+  }, ["Surdo(a)", "Ouvinte", "Outros"].map(v => React.createElement("button", {
+    key: v,
+    className: `ft ${fId.includes(v) ? "a" : ""}`,
+    style: {
+      "--c": color
+    },
+    onClick: () => toggleArr(fId, setFId, v)
+  }, v)))), React.createElement("div", null, React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: t.textMuted,
+      marginBottom: 3
+    }
+  }, "Gênero"), React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 4,
+      flexWrap: "wrap"
+    }
+  }, ["Masculino", "Feminino"].map(v => React.createElement("button", {
+    key: v,
+    className: `ft ${fGen.includes(v) ? "a" : ""}`,
+    style: {
+      "--c": color
+    },
+    onClick: () => toggleArr(fGen, setFGen, v)
+  }, v)))));
 }
 function filterResponses(fMod, fId, fGen) {
   return RESPONSES.filter((_, i) => {
@@ -11277,7 +11241,7 @@ function Dashboard() {
   };
   const colorA = "#3b82f6";
   const colorB = "#f59e0b";
-  return _reactJsxDevRuntime.jsxDEV("div", {
+  return React.createElement("div", {
     style: {
       display: "flex",
       minHeight: "100vh",
@@ -11285,474 +11249,418 @@ function Dashboard() {
       fontFamily: "'Source Sans 3','Segoe UI',system-ui,sans-serif",
       color: t.text,
       transition: "background .3s,color .3s"
+    }
+  }, React.createElement("style", null, `@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700;800;900&display=swap');*{box-sizing:border-box;margin:0;padding:0}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:${t.scrollTrack}}::-webkit-scrollbar-thumb{background:${t.scrollThumb};border-radius:3px}.nb{cursor:pointer;transition:all .2s;border:none;background:transparent;text-align:left;width:100%;padding:10px 14px;border-radius:10px;display:flex;align-items:center;gap:10px;color:${t.textSec};font-size:13px;font-family:inherit}.nb:hover{background:${t.border};color:${t.text}}.nb.a{background:${t.navActive};color:#60a5fa;font-weight:700;border:1px solid ${t.navActiveBorder}}.cd{background:${t.card};border:1px solid ${t.border};border-radius:16px;padding:18px;margin-bottom:14px;transition:border-color .2s,background .3s}.cd:hover{border-color:${t.borderHover}}.ft{cursor:pointer;display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:11px;font-family:inherit;transition:all .15s;border:1px solid ${t.filterBorder};background:${t.filterBg};color:${t.textSec};white-space:nowrap}.ft:hover{border-color:#60a5fa}.ft.a{background:var(--c);border-color:var(--c);color:#fff;font-weight:600}.hm{display:none;cursor:pointer;background:${t.card};border:1px solid ${t.border};color:${t.text};padding:8px 12px;border-radius:8px;position:fixed;top:12px;left:12px;z-index:100;font-size:18px;font-family:inherit}.thsw{display:flex;align-items:center;gap:6px;cursor:pointer;background:${t.card};border:1px solid ${t.border};padding:5px 12px;border-radius:20px;font-size:11px;font-family:inherit;color:${t.textSec};transition:all .2s;white-space:nowrap;width:100%;justify-content:center}.thsw:hover{border-color:#60a5fa;color:${t.text}}.cmpbtn{cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-family:inherit;transition:all .2s;border:2px solid ${t.filterBorder};background:${t.filterBg};color:${t.textSec};width:100%;justify-content:center;font-weight:600}.cmpbtn:hover{border-color:#f59e0b;color:${t.text}}.cmpbtn.a{background:linear-gradient(135deg,#1e40af22,#92400e22);border-color:#f59e0b;color:#f59e0b}@media(max-width:900px){.hm{display:block}.sb{position:fixed!important;z-index:99;transform:translateX(-100%);transition:transform .3s}.sb.o{transform:translateX(0)}.mc{margin-left:0!important;padding-top:52px!important}}`), React.createElement("button", {
+    className: "hm",
+    onClick: () => setOpen(!open)
+  }, "☰"), React.createElement("div", {
+    className: `sb ${open ? "o" : ""}`,
+    style: {
+      width: 250,
+      minWidth: 250,
+      background: t.sidebar,
+      borderRight: `1px solid ${t.border}`,
+      padding: "16px 12px",
+      position: "sticky",
+      top: 0,
+      height: "100vh",
+      overflowY: "auto",
+      transition: "background .3s"
+    }
+  }, React.createElement("div", {
+    style: {
+      padding: "0 8px 14px",
+      borderBottom: `1px solid ${t.border}`,
+      marginBottom: 10
+    }
+  }, React.createElement("h1", {
+    style: {
+      fontSize: 16,
+      fontWeight: 900,
+      background: "linear-gradient(135deg,#60a5fa,#a78bfa)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      lineHeight: 1.3
+    }
+  }, "Painel: Egressos do Curso de Pedagogia Bilíngue do INES"), React.createElement("p", {
+    style: {
+      fontSize: 11,
+      color: t.textMuted,
+      marginTop: 2
+    }
+  }, "Presencial e EaD · 110 respondentes")), React.createElement("div", {
+    style: {
+      padding: "0 4px 12px",
+      borderBottom: `1px solid ${t.border}`,
+      marginBottom: 10
+    }
+  }, React.createElement("button", {
+    className: "thsw",
+    onClick: () => setDark(!dark)
+  }, dark ? "☀️ Modo Claro" : "🌙 Modo Escuro")), React.createElement("div", {
+    style: {
+      padding: "0 4px 12px",
+      borderBottom: `1px solid ${t.border}`,
+      marginBottom: 10
+    }
+  }, React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: t.textSec,
+      marginBottom: 6
+    }
+  }, "Tamanho da Fonte"), React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      justifyContent: "center"
+    }
+  }, React.createElement("button", {
+    className: "thsw",
+    style: {
+      width: "auto",
+      padding: "4px 12px",
+      fontSize: 14,
+      fontWeight: 700
     },
-    children: [_reactJsxDevRuntime.jsxDEV("style", {
-      children: `@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700;800;900&display=swap');*{box-sizing:border-box;margin:0;padding:0}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:${t.scrollTrack}}::-webkit-scrollbar-thumb{background:${t.scrollThumb};border-radius:3px}.nb{cursor:pointer;transition:all .2s;border:none;background:transparent;text-align:left;width:100%;padding:10px 14px;border-radius:10px;display:flex;align-items:center;gap:10px;color:${t.textSec};font-size:13px;font-family:inherit}.nb:hover{background:${t.border};color:${t.text}}.nb.a{background:${t.navActive};color:#60a5fa;font-weight:700;border:1px solid ${t.navActiveBorder}}.cd{background:${t.card};border:1px solid ${t.border};border-radius:16px;padding:18px;margin-bottom:14px;transition:border-color .2s,background .3s}.cd:hover{border-color:${t.borderHover}}.ft{cursor:pointer;display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:11px;font-family:inherit;transition:all .15s;border:1px solid ${t.filterBorder};background:${t.filterBg};color:${t.textSec};white-space:nowrap}.ft:hover{border-color:#60a5fa}.ft.a{background:var(--c);border-color:var(--c);color:#fff;font-weight:600}.hm{display:none;cursor:pointer;background:${t.card};border:1px solid ${t.border};color:${t.text};padding:8px 12px;border-radius:8px;position:fixed;top:12px;left:12px;z-index:100;font-size:18px;font-family:inherit}.thsw{display:flex;align-items:center;gap:6px;cursor:pointer;background:${t.card};border:1px solid ${t.border};padding:5px 12px;border-radius:20px;font-size:11px;font-family:inherit;color:${t.textSec};transition:all .2s;white-space:nowrap;width:100%;justify-content:center}.thsw:hover{border-color:#60a5fa;color:${t.text}}.cmpbtn{cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-family:inherit;transition:all .2s;border:2px solid ${t.filterBorder};background:${t.filterBg};color:${t.textSec};width:100%;justify-content:center;font-weight:600}.cmpbtn:hover{border-color:#f59e0b;color:${t.text}}.cmpbtn.a{background:linear-gradient(135deg,#1e40af22,#92400e22);border-color:#f59e0b;color:#f59e0b}@media(max-width:900px){.hm{display:block}.sb{position:fixed!important;z-index:99;transform:translateX(-100%);transition:transform .3s}.sb.o{transform:translateX(0)}.mc{margin-left:0!important;padding-top:52px!important}}`
-    }, void 0, false), _reactJsxDevRuntime.jsxDEV("button", {
-      className: "hm",
-      onClick: () => setOpen(!open),
-      children: "☰"
-    }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-      className: `sb ${open ? "o" : ""}`,
-      style: {
-        width: 250,
-        minWidth: 250,
-        background: t.sidebar,
-        borderRight: `1px solid ${t.border}`,
-        padding: "16px 12px",
-        position: "sticky",
-        top: 0,
-        height: "100vh",
-        overflowY: "auto",
-        transition: "background .3s"
-      },
-      children: [_reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          padding: "0 8px 14px",
-          borderBottom: `1px solid ${t.border}`,
-          marginBottom: 10
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("h1", {
-          style: {
-            fontSize: 16,
-            fontWeight: 900,
-            background: "linear-gradient(135deg,#60a5fa,#a78bfa)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            lineHeight: 1.3
-          },
-          children: "Painel: Egressos do Curso de Pedagogia Bilíngue do INES"
-        }, void 0, false), _reactJsxDevRuntime.jsxDEV("p", {
-          style: {
-            fontSize: 11,
-            color: t.textMuted,
-            marginTop: 2
-          },
-          children: "Presencial e EaD · 110 respondentes"
-        }, void 0, false)]
-      }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          padding: "0 4px 12px",
-          borderBottom: `1px solid ${t.border}`,
-          marginBottom: 10
-        },
-        children: _reactJsxDevRuntime.jsxDEV("button", {
-          className: "thsw",
-          onClick: () => setDark(!dark),
-          children: dark ? "☀️ Modo Claro" : "🌙 Modo Escuro"
-        }, void 0, false)
-      }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          padding: "0 4px 12px",
-          borderBottom: `1px solid ${t.border}`,
-          marginBottom: 10
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            fontSize: 11,
-            fontWeight: 700,
-            color: t.textSec,
-            marginBottom: 6
-          },
-          children: "Tamanho da Fonte"
-        }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            justifyContent: "center"
-          },
-          children: [_reactJsxDevRuntime.jsxDEV("button", {
-            className: "thsw",
-            style: {
-              width: "auto",
-              padding: "4px 12px",
-              fontSize: 14,
-              fontWeight: 700
-            },
-            onClick: () => setFontScale(s => Math.max(0.7, s - 0.1)),
-            children: "A−"
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("span", {
-            style: {
-              fontSize: 12,
-              color: t.textSec,
-              minWidth: 36,
-              textAlign: "center"
-            },
-            children: [Math.round(fontScale * 100), "%"]
-          }, void 0, true), _reactJsxDevRuntime.jsxDEV("button", {
-            className: "thsw",
-            style: {
-              width: "auto",
-              padding: "4px 12px",
-              fontSize: 14,
-              fontWeight: 700
-            },
-            onClick: () => setFontScale(s => Math.min(1.6, s + 0.1)),
-            children: "A+"
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          padding: "0 4px 12px",
-          borderBottom: `1px solid ${t.border}`,
-          marginBottom: 10
-        },
-        children: _reactJsxDevRuntime.jsxDEV("button", {
-          className: `cmpbtn ${compare ? "a" : ""}`,
-          onClick: () => setCompare(!compare),
-          children: compare ? "⇋ Comparando" : "⇋ Comparar"
-        }, void 0, false)
-      }, void 0, false), !compare && _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          padding: "0 4px 12px",
-          borderBottom: `1px solid ${t.border}`,
-          marginBottom: 10
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            fontSize: 11,
-            fontWeight: 700,
-            color: t.textSec,
-            marginBottom: 6
-          },
-          children: ["Filtros ", _reactJsxDevRuntime.jsxDEV("span", {
-            style: {
-              fontWeight: 400,
-              color: t.textMuted
-            },
-            children: ["(", filtered.length, " de 110)"]
-          }, void 0, true)]
-        }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            marginBottom: 8
-          },
-          children: [_reactJsxDevRuntime.jsxDEV("div", {
-            style: {
-              fontSize: 10,
-              color: t.textMuted,
-              marginBottom: 4
-            },
-            children: "Modalidade"
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-            style: {
-              display: "flex",
-              gap: 4,
-              flexWrap: "wrap"
-            },
-            children: ["Presencial", "EaD"].map(v => _reactJsxDevRuntime.jsxDEV("button", {
-              className: `ft ${fMod.includes(v) ? "a" : ""}`,
-              style: {
-                "--c": "#3b82f6"
-              },
-              onClick: () => toggleArr(fMod, setFMod, v),
-              children: v
-            }, v, false))
-          }, void 0, false)]
-        }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            marginBottom: 8
-          },
-          children: [_reactJsxDevRuntime.jsxDEV("div", {
-            style: {
-              fontSize: 10,
-              color: t.textMuted,
-              marginBottom: 4
-            },
-            children: "Identidade"
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-            style: {
-              display: "flex",
-              gap: 4,
-              flexWrap: "wrap"
-            },
-            children: ["Surdo(a)", "Ouvinte", "Outros"].map(v => _reactJsxDevRuntime.jsxDEV("button", {
-              className: `ft ${fId.includes(v) ? "a" : ""}`,
-              style: {
-                "--c": "#10b981"
-              },
-              onClick: () => toggleArr(fId, setFId, v),
-              children: v
-            }, v, false))
-          }, void 0, false)]
-        }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-          children: [_reactJsxDevRuntime.jsxDEV("div", {
-            style: {
-              fontSize: 10,
-              color: t.textMuted,
-              marginBottom: 4
-            },
-            children: "Gênero"
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-            style: {
-              display: "flex",
-              gap: 4,
-              flexWrap: "wrap"
-            },
-            children: ["Masculino", "Feminino"].map(v => _reactJsxDevRuntime.jsxDEV("button", {
-              className: `ft ${fGen.includes(v) ? "a" : ""}`,
-              style: {
-                "--c": "#a855f7"
-              },
-              onClick: () => toggleArr(fGen, setFGen, v),
-              children: v
-            }, v, false))
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true), compare && _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          padding: "0 4px 12px",
-          borderBottom: `1px solid ${t.border}`,
-          marginBottom: 10
-        },
-        children: _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            display: "flex",
-            flexDirection: "column",
-            gap: 8
-          },
-          children: [_reactJsxDevRuntime.jsxDEV(FilterPanel, {
-            label: "Grupo A",
-            color: colorA,
-            fMod: aMod,
-            setFMod: setAMod,
-            fId: aId,
-            setFId: setAId,
-            fGen: aGen,
-            setFGen: setAGen,
-            count: filteredA.length,
-            t: t
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV(FilterPanel, {
-            label: "Grupo B",
-            color: colorB,
-            fMod: bMod,
-            setFMod: setBMod,
-            fId: bId,
-            setFId: setBId,
-            fGen: bGen,
-            setFGen: setBGen,
-            count: filteredB.length,
-            t: t
-          }, void 0, false)]
-        }, void 0, true)
-      }, void 0, false), SECTIONS.map((s, i) => _reactJsxDevRuntime.jsxDEV("button", {
-        className: `nb ${sec === i ? "a" : ""}`,
-        onClick: () => {
-          setSec(i);
-          if (window.innerWidth < 900) setOpen(false);
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("span", {
-          style: {
-            fontSize: 15
-          },
-          children: s.icon
-        }, void 0, false), _reactJsxDevRuntime.jsxDEV("span", {
-          children: s.name
-        }, void 0, false), s.ids.length > 0 && _reactJsxDevRuntime.jsxDEV("span", {
-          style: {
-            marginLeft: "auto",
-            fontSize: 10,
-            background: t.border,
-            padding: "2px 6px",
-            borderRadius: 8,
-            color: t.textMuted
-          },
-          children: s.ids.length
-        }, void 0, false)]
-      }, i, true))]
-    }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-      className: "mc",
-      style: {
-        flex: 1,
-        padding: 24,
-        overflowY: "auto"
-      },
-      children: _reactJsxDevRuntime.jsxDEV("div", {
-        style: {
-          maxWidth: compare ? 1400 : 1100,
-          margin: "0 auto",
-          transition: "max-width .3s"
-        },
-        children: [_reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            marginBottom: 20
-          },
-          children: [_reactJsxDevRuntime.jsxDEV("h2", {
-            style: {
-              fontSize: 24,
-              fontWeight: 800,
-              letterSpacing: -.5,
-              color: t.text
-            },
-            children: [SECTIONS[sec].icon, " ", SECTIONS[sec].name]
-          }, void 0, true), sec > 0 && !compare && _reactJsxDevRuntime.jsxDEV("p", {
-            style: {
-              fontSize: 12,
-              color: t.textMuted,
-              marginTop: 3
-            },
-            children: [SECTIONS[sec].ids.length, " questões · ", filtered.length, " respondentes filtrados"]
-          }, void 0, true), sec > 0 && compare && _reactJsxDevRuntime.jsxDEV("p", {
-            style: {
-              fontSize: 12,
-              color: t.textMuted,
-              marginTop: 3
-            },
-            children: [SECTIONS[sec].ids.length, " questões · ", _reactJsxDevRuntime.jsxDEV("span", {
-              style: {
-                color: colorA,
-                fontWeight: 700
-              },
-              children: ["Grupo A (", filteredA.length, ")"]
-            }, void 0, true), " vs ", _reactJsxDevRuntime.jsxDEV("span", {
-              style: {
-                color: colorB,
-                fontWeight: 700
-              },
-              children: ["Grupo B (", filteredB.length, ")"]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, void 0, true), sec === 0 && !compare && _reactJsxDevRuntime.jsxDEV(Overview, {
-          filtered: filtered,
-          t: t
-        }, void 0, false), sec === 0 && compare && _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 16
-          },
-          children: [_reactJsxDevRuntime.jsxDEV("div", {
-            children: [_reactJsxDevRuntime.jsxDEV("div", {
-              style: {
-                textAlign: "center",
-                marginBottom: 12,
-                fontSize: 14,
-                fontWeight: 800,
-                color: colorA,
-                padding: "6px 0",
-                borderBottom: `2px solid ${colorA}`
-              },
-              children: ["Grupo A — ", _reactJsxDevRuntime.jsxDEV(CompareLabel, {
-                fMod: aMod,
-                fId: aId,
-                fGen: aGen
-              }, void 0, false), " (", filteredA.length, ")"]
-            }, void 0, true), _reactJsxDevRuntime.jsxDEV(Overview, {
-              filtered: filteredA,
-              t: t
-            }, void 0, false)]
-          }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-            children: [_reactJsxDevRuntime.jsxDEV("div", {
-              style: {
-                textAlign: "center",
-                marginBottom: 12,
-                fontSize: 14,
-                fontWeight: 800,
-                color: colorB,
-                padding: "6px 0",
-                borderBottom: `2px solid ${colorB}`
-              },
-              children: ["Grupo B — ", _reactJsxDevRuntime.jsxDEV(CompareLabel, {
-                fMod: bMod,
-                fId: bId,
-                fGen: bGen
-              }, void 0, false), " (", filteredB.length, ")"]
-            }, void 0, true), _reactJsxDevRuntime.jsxDEV(Overview, {
-              filtered: filteredB,
-              t: t
-            }, void 0, false)]
-          }, void 0, true)]
-        }, void 0, true), sec > 0 && !compare && cur.map(q => _reactJsxDevRuntime.jsxDEV("div", {
-          className: "cd",
-          children: [_reactJsxDevRuntime.jsxDEV("p", {
-            style: {
-              fontSize: 11 * fontScale,
-              color: t.textMuted,
-              lineHeight: 1.4,
-              marginBottom: 8,
-              fontWeight: 600
-            },
-            children: shortQ(q.question)
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV(QChart, {
-            q: q,
-            filtered: filtered,
-            t: t,
-            fontScale: fontScale
-          }, void 0, false)]
-        }, q.id, true)), sec > 0 && compare && cur.map(q => _reactJsxDevRuntime.jsxDEV("div", {
-          className: "cd",
-          children: [_reactJsxDevRuntime.jsxDEV("p", {
-            style: {
-              fontSize: 11 * fontScale,
-              color: t.text,
-              lineHeight: 1.4,
-              marginBottom: 12,
-              fontWeight: 700,
-              textAlign: "center"
-            },
-            children: shortQ(q.question)
-          }, void 0, false), _reactJsxDevRuntime.jsxDEV("div", {
-            style: {
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 12
-            },
-            children: [_reactJsxDevRuntime.jsxDEV("div", {
-              style: {
-                borderRight: `1px solid ${t.border}`,
-                paddingRight: 8
-              },
-              children: [_reactJsxDevRuntime.jsxDEV("div", {
-                style: {
-                  textAlign: "center",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: colorA,
-                  marginBottom: 4
-                },
-                children: ["Grupo A (", filteredA.length, ")"]
-              }, void 0, true), _reactJsxDevRuntime.jsxDEV(QChart, {
-                q: q,
-                filtered: filteredA,
-                t: t,
-                fontScale: fontScale
-              }, void 0, false)]
-            }, void 0, true), _reactJsxDevRuntime.jsxDEV("div", {
-              style: {
-                paddingLeft: 8
-              },
-              children: [_reactJsxDevRuntime.jsxDEV("div", {
-                style: {
-                  textAlign: "center",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: colorB,
-                  marginBottom: 4
-                },
-                children: ["Grupo B (", filteredB.length, ")"]
-              }, void 0, true), _reactJsxDevRuntime.jsxDEV(QChart, {
-                q: q,
-                filtered: filteredB,
-                t: t,
-                fontScale: fontScale
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, q.id, true)), _reactJsxDevRuntime.jsxDEV("div", {
-          style: {
-            textAlign: "center",
-            padding: "24px 0 8px",
-            fontSize: 11,
-            color: t.textDim
-          },
-          children: "Painel Interativo: Egressos Pedagogia Bilíngue do INES · Dashboard Comparativo · v2.0"
-        }, void 0, false)]
-      }, void 0, true)
-    }, void 0, false)]
-  }, void 0, true);
+    onClick: () => setFontScale(s => Math.max(0.7, s - 0.1))
+  }, "A−"), React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: t.textSec,
+      minWidth: 36,
+      textAlign: "center"
+    }
+  }, Math.round(fontScale * 100), "%"), React.createElement("button", {
+    className: "thsw",
+    style: {
+      width: "auto",
+      padding: "4px 12px",
+      fontSize: 14,
+      fontWeight: 700
+    },
+    onClick: () => setFontScale(s => Math.min(1.6, s + 0.1))
+  }, "A+"))), React.createElement("div", {
+    style: {
+      padding: "0 4px 12px",
+      borderBottom: `1px solid ${t.border}`,
+      marginBottom: 10
+    }
+  }, React.createElement("button", {
+    className: `cmpbtn ${compare ? "a" : ""}`,
+    onClick: () => setCompare(!compare)
+  }, compare ? "⇋ Comparando" : "⇋ Comparar")), !compare && React.createElement("div", {
+    style: {
+      padding: "0 4px 12px",
+      borderBottom: `1px solid ${t.border}`,
+      marginBottom: 10
+    }
+  }, React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: t.textSec,
+      marginBottom: 6
+    }
+  }, "Filtros ", React.createElement("span", {
+    style: {
+      fontWeight: 400,
+      color: t.textMuted
+    }
+  }, "(", filtered.length, " de 110)")), React.createElement("div", {
+    style: {
+      marginBottom: 8
+    }
+  }, React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: t.textMuted,
+      marginBottom: 4
+    }
+  }, "Modalidade"), React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 4,
+      flexWrap: "wrap"
+    }
+  }, ["Presencial", "EaD"].map(v => React.createElement("button", {
+    key: v,
+    className: `ft ${fMod.includes(v) ? "a" : ""}`,
+    style: {
+      "--c": "#3b82f6"
+    },
+    onClick: () => toggleArr(fMod, setFMod, v)
+  }, v)))), React.createElement("div", {
+    style: {
+      marginBottom: 8
+    }
+  }, React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: t.textMuted,
+      marginBottom: 4
+    }
+  }, "Identidade"), React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 4,
+      flexWrap: "wrap"
+    }
+  }, ["Surdo(a)", "Ouvinte", "Outros"].map(v => React.createElement("button", {
+    key: v,
+    className: `ft ${fId.includes(v) ? "a" : ""}`,
+    style: {
+      "--c": "#10b981"
+    },
+    onClick: () => toggleArr(fId, setFId, v)
+  }, v)))), React.createElement("div", null, React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: t.textMuted,
+      marginBottom: 4
+    }
+  }, "Gênero"), React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 4,
+      flexWrap: "wrap"
+    }
+  }, ["Masculino", "Feminino"].map(v => React.createElement("button", {
+    key: v,
+    className: `ft ${fGen.includes(v) ? "a" : ""}`,
+    style: {
+      "--c": "#a855f7"
+    },
+    onClick: () => toggleArr(fGen, setFGen, v)
+  }, v))))), compare && React.createElement("div", {
+    style: {
+      padding: "0 4px 12px",
+      borderBottom: `1px solid ${t.border}`,
+      marginBottom: 10
+    }
+  }, React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 8
+    }
+  }, React.createElement(FilterPanel, {
+    label: "Grupo A",
+    color: colorA,
+    fMod: aMod,
+    setFMod: setAMod,
+    fId: aId,
+    setFId: setAId,
+    fGen: aGen,
+    setFGen: setAGen,
+    count: filteredA.length,
+    t: t
+  }), React.createElement(FilterPanel, {
+    label: "Grupo B",
+    color: colorB,
+    fMod: bMod,
+    setFMod: setBMod,
+    fId: bId,
+    setFId: setBId,
+    fGen: bGen,
+    setFGen: setBGen,
+    count: filteredB.length,
+    t: t
+  }))), SECTIONS.map((s, i) => React.createElement("button", {
+    key: i,
+    className: `nb ${sec === i ? "a" : ""}`,
+    onClick: () => {
+      setSec(i);
+      if (window.innerWidth < 900) setOpen(false);
+    }
+  }, React.createElement("span", {
+    style: {
+      fontSize: 15
+    }
+  }, s.icon), React.createElement("span", null, s.name), s.ids.length > 0 && React.createElement("span", {
+    style: {
+      marginLeft: "auto",
+      fontSize: 10,
+      background: t.border,
+      padding: "2px 6px",
+      borderRadius: 8,
+      color: t.textMuted
+    }
+  }, s.ids.length)))), React.createElement("div", {
+    className: "mc",
+    style: {
+      flex: 1,
+      padding: 24,
+      overflowY: "auto"
+    }
+  }, React.createElement("div", {
+    style: {
+      maxWidth: compare ? 1400 : 1100,
+      margin: "0 auto",
+      transition: "max-width .3s"
+    }
+  }, React.createElement("div", {
+    style: {
+      marginBottom: 20
+    }
+  }, React.createElement("h2", {
+    style: {
+      fontSize: 24,
+      fontWeight: 800,
+      letterSpacing: -.5,
+      color: t.text
+    }
+  }, SECTIONS[sec].icon, " ", SECTIONS[sec].name), sec > 0 && !compare && React.createElement("p", {
+    style: {
+      fontSize: 12,
+      color: t.textMuted,
+      marginTop: 3
+    }
+  }, SECTIONS[sec].ids.length, " questões · ", filtered.length, " respondentes filtrados"), sec > 0 && compare && React.createElement("p", {
+    style: {
+      fontSize: 12,
+      color: t.textMuted,
+      marginTop: 3
+    }
+  }, SECTIONS[sec].ids.length, " questões · ", React.createElement("span", {
+    style: {
+      color: colorA,
+      fontWeight: 700
+    }
+  }, "Grupo A (", filteredA.length, ")"), " vs ", React.createElement("span", {
+    style: {
+      color: colorB,
+      fontWeight: 700
+    }
+  }, "Grupo B (", filteredB.length, ")"))), sec === 0 && !compare && React.createElement(Overview, {
+    filtered: filtered,
+    t: t
+  }), sec === 0 && compare && React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 16
+    }
+  }, React.createElement("div", null, React.createElement("div", {
+    style: {
+      textAlign: "center",
+      marginBottom: 12,
+      fontSize: 14,
+      fontWeight: 800,
+      color: colorA,
+      padding: "6px 0",
+      borderBottom: `2px solid ${colorA}`
+    }
+  }, "Grupo A — ", React.createElement(CompareLabel, {
+    fMod: aMod,
+    fId: aId,
+    fGen: aGen
+  }), " (", filteredA.length, ")"), React.createElement(Overview, {
+    filtered: filteredA,
+    t: t
+  })), React.createElement("div", null, React.createElement("div", {
+    style: {
+      textAlign: "center",
+      marginBottom: 12,
+      fontSize: 14,
+      fontWeight: 800,
+      color: colorB,
+      padding: "6px 0",
+      borderBottom: `2px solid ${colorB}`
+    }
+  }, "Grupo B — ", React.createElement(CompareLabel, {
+    fMod: bMod,
+    fId: bId,
+    fGen: bGen
+  }), " (", filteredB.length, ")"), React.createElement(Overview, {
+    filtered: filteredB,
+    t: t
+  }))), sec > 0 && !compare && cur.map(q => React.createElement("div", {
+    key: q.id,
+    className: "cd"
+  }, React.createElement("p", {
+    style: {
+      fontSize: 11 * fontScale,
+      color: t.textMuted,
+      lineHeight: 1.4,
+      marginBottom: 8,
+      fontWeight: 600
+    }
+  }, shortQ(q.question)), React.createElement(QChart, {
+    q: q,
+    filtered: filtered,
+    t: t,
+    fontScale: fontScale
+  }))), sec > 0 && compare && cur.map(q => React.createElement("div", {
+    key: q.id,
+    className: "cd"
+  }, React.createElement("p", {
+    style: {
+      fontSize: 11 * fontScale,
+      color: t.text,
+      lineHeight: 1.4,
+      marginBottom: 12,
+      fontWeight: 700,
+      textAlign: "center"
+    }
+  }, shortQ(q.question)), React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 12
+    }
+  }, React.createElement("div", {
+    style: {
+      borderRight: `1px solid ${t.border}`,
+      paddingRight: 8
+    }
+  }, React.createElement("div", {
+    style: {
+      textAlign: "center",
+      fontSize: 11,
+      fontWeight: 700,
+      color: colorA,
+      marginBottom: 4
+    }
+  }, "Grupo A (", filteredA.length, ")"), React.createElement(QChart, {
+    q: q,
+    filtered: filteredA,
+    t: t,
+    fontScale: fontScale
+  })), React.createElement("div", {
+    style: {
+      paddingLeft: 8
+    }
+  }, React.createElement("div", {
+    style: {
+      textAlign: "center",
+      fontSize: 11,
+      fontWeight: 700,
+      color: colorB,
+      marginBottom: 4
+    }
+  }, "Grupo B (", filteredB.length, ")"), React.createElement(QChart, {
+    q: q,
+    filtered: filteredB,
+    t: t,
+    fontScale: fontScale
+  }))))), React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: "24px 0 8px",
+      fontSize: 11,
+      color: t.textDim
+    }
+  }, "Painel Interativo: Egressos Pedagogia Bilíngue do INES · Dashboard Comparativo · v2.0"))));
 }
 const _root = ReactDOM.createRoot(document.getElementById('root'));
 _root.render(React.createElement(Dashboard));
+} catch (e) {
+  document.getElementById('root').innerHTML = '<div class="errbox"><b>Não foi possível carregar o painel.</b><br>'+(e && e.message ? e.message : e)+'</div>';
+  console.error(e);
+}
 </script>
 </body>
 </html>
