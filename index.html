@@ -142,7 +142,7 @@ html[data-contrast="high"] .logo-img,html[data-contrast="high"] img[alt*="INES"]
 .hero-wrap{align-items:center}
 .hero-libras{display:flex;align-items:center;justify-content:center;position:relative}
 /* linha branca limpa alinhada à base do intérprete (esmaecimento só nas pontas) */
-.hero-libras::after{content:"";position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+.hero-libras::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);
   width:62%;height:3px;border-radius:3px;pointer-events:none;z-index:2;
   background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.95) 7%,rgba(255,255,255,.95) 93%,rgba(255,255,255,0) 100%)}
 html[data-contrast="high"] .hero-libras::after{background:#fff}
@@ -1028,7 +1028,7 @@ const SERVICES=[
 /* Benefícios da home (mosaico visual, leva ao cadastro/login) */
 const BENEFITS=[
   {ico:"id",th:"blueGreen",t:"Carteirinha digital",x:"Vínculo com QR Code",span:"span3",tall:true},
-  {ico:"case",th:"deep",t:"Vagas acessíveis",x:"Empresas inclusivas",span:"span3",tall:true},
+  {ico:"case",th:"deep",t:"Oportunidades",x:"Encontre oportunidades de trabalho",span:"span3",tall:true},
   {ico:"doc",th:"teal",t:"Diploma e histórico",x:"Documentos digitais",span:"span2"},
   {ico:"mentor",th:"green",t:"Mentoria",x:"Auxilie na evolução de alunos do INES",span:"span2"},
   {ico:"map",th:"slate",t:"Diretório e mapa",x:"Encontre colegas",span:"span2"},
